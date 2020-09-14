@@ -1,6 +1,3 @@
-
-//这样写的额好处：
-
 class kString{
 
 static const String MainTitle = "商城";

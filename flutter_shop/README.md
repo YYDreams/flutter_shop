@@ -1,16 +1,10 @@
-# flutter_shop
+纪要
+- 通过node模拟网络请求数据
+打开终端
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- 切换到指定目录 -->
+ cd /Users/hua-cloud/Desktop/Flutter/github/flutter_shop/flutter_shop/node_shop_server
+ <!--添加依赖库 -->
+npm install
+<!-- 启动服务 -->
+npm start

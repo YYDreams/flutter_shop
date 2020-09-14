@@ -6,27 +6,23 @@ import './config/index.dart';
 
 void main() {
 
+//初始化
 var  currentIndexProvide = CurrentIndexProvide();
-  //状态管理
-  var providers = Providers();
-  // 当有多个的时候再一个一个加进入即可
+var providers = Providers(); //状态管理
+  // 当有多个的时候再一个一个加进入即可 当有多个的时候用..
   providers..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide));
-
-
+  
   runApp(ProviderNode(child: MyApp(),providers: providers,));
-
 
 }
 
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Container(
-      child: MaterialApp(
 
+      child: MaterialApp(
       title: kString.homeTitle,
       debugShowCheckedModeBanner: false,
       //主题
