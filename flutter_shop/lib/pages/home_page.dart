@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import '../config/index.dart';
@@ -90,6 +91,14 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
                   RecommandView(
                     recommandList: recommendList,
                   ),
+                  //广告页
+                  FloorPicView(
+                    floor1Pic: floor1PicMap,
+                  ),
+                  //推荐下层
+                  FloorView(
+                    floor1List: floor1List,
+                  ),
 
                  ],
               ),
@@ -133,6 +142,7 @@ class SwiperDiy extends StatelessWidget {
              onTap: (){
                print("---------$index----------");
              },
+            
              child: Image.network("${swipeList[index]['image']}",fit: BoxFit.cover,),
 
            );
@@ -242,12 +252,51 @@ class RecommandView extends StatelessWidget {
       ),
     );
   }
-
   //推荐商品item
-  Widget _getItems(){
+  Widget _getItems(index,context){
+
+       return  InkWell(
+            onTap: (){
+               print("-----推荐商品item----$index----------");
+             },
+           child: Container(
+               width: ScreenUtil().setWidth(280),
+               padding:EdgeInsets.all(10.0),
+               decoration: BoxDecoration(
+                 color:Colors.white,
+                 border:Border(
+                   left: BorderSide(width: 0.5, color: kColor.defalutBorderColor),
+
+                 )
+               ),
+               child: Column(
+
+                children: <Widget>[
+                  //防止溢出组件
+                  Expanded(
+
+                    child: Image.network(recommandList[index]["image"],fit: BoxFit.cover,)
+
+                    ),
+
+                  // Text(recommandList[index]['name']),
+                  Text('￥${recommandList[index]["presentPrice"]}',
+                  style: kFont.priceStyle,
+                  ),
+                  Text('￥${recommandList[index]["oriPrice"]}',
+
+                  style: kFont.oriPriceStyle,
+                  )
+
+                ],  
+                
+               ),
+
+           ),   
+     
+       );
 
     }
-
 
 // 商品推荐列表
     @override
@@ -259,22 +308,163 @@ class RecommandView extends StatelessWidget {
          scrollDirection: Axis.horizontal, //水平方向
          itemCount: recommandList.length,
          itemBuilder: (context,index){
-
-
-           return _getItems();
+           return _getItems(index,context);
          }
          ),
-
-      
      );
    }
 }
 
+//广告位 
+class FloorPicView extends StatelessWidget{
+
+  final Map floor1Pic;
+
+  FloorPicView({Key key, this.floor1Pic}) : super(key:key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+    
+      height: ScreenUtil().setHeight(150),
+      child: InkWell(
+         child: Image.network(
+           floor1Pic['PICTURE_ADDRESS'],
+           fit: BoxFit.cover,
+         ),  
+
+      ),
+
+
+    );
+  }
+
+}
+
+
+// 推荐下层
+class FloorView extends StatelessWidget{
+
+    final List floor1List;
+
+    void jumpGoodsDetail(context,goodsId){
+
+      print("跳转到商品详情${goodsId}");
+    }
+
+
+    FloorView({Key key, this.floor1List}) : super(key:key);
+
+
+    @override
+  Widget build(BuildContext context) {
+    //
+    return Container(
+       child: Row(
+
+         children: <Widget>[
+
+           //左侧商品
+           Expanded(
+             child: Column(
+               children: <Widget>[
+
+                 Container(
+                   padding: EdgeInsets.only(top:4),
+                      height: 400,
+                      child: InkWell(
+                       child: Image.network(floor1List[0]["image"],fit: BoxFit.cover,),
+                      onTap: (){
+                            
+                          jumpGoodsDetail(context, floor1List[0]["goodsId"]);  
+
+                      },
+                      ),
+                     
+
+                 ),
+                 Container(
+                   padding: EdgeInsets.only(top:4),
+                      height: 200,
+                      child: InkWell(
+                       child: Image.network(floor1List[1]["image"],fit: BoxFit.cover,),
+                      onTap: (){
+                            
+                          jumpGoodsDetail(context, floor1List[1]["goodsId"]);  
+
+                      },
+                      ),
+                                           
+                 ),
+
+  
+               ],
+               
+             ),
+             ),
+            //右侧商品
+             Expanded(
+               child: Column(
+                 children: <Widget>[
+
+                      Container(
+                   padding: EdgeInsets.only(top:4),
+                      height: 200,
+                      child: InkWell(
+                       child: Image.network(floor1List[2]["image"],fit: BoxFit.cover,),
+                      onTap: (){
+                            
+                          jumpGoodsDetail(context, floor1List[2]["goodsId"]);  
+
+                      },
+                      ),
+                     
+
+                 ),
+                 Container(
+                   padding: EdgeInsets.only(top:4),
+                      height: 200,
+                      child: InkWell(
+                       child: Image.network(floor1List[3]["image"],fit: BoxFit.cover,),
+                      onTap: (){
+                            
+                          jumpGoodsDetail(context, floor1List[3]["goodsId"]);  
+
+                      },
+                      ),
+                                           
+                 ),
+
+  
+     Container(
+                   padding: EdgeInsets.only(top:4),
+                      height: 200,
+                      child: InkWell(
+                       child: Image.network(floor1List[4]["image"],fit: BoxFit.cover,),
+                      onTap: (){
+                            
+                          jumpGoodsDetail(context, floor1List[4]["goodsId"]);  
+
+                      },
+                      ),
+                     
+
+                 ),
+       
+  
+
+                 ],
+               )
+             )
+
+         ],
+       ),
+
+
+    );
+  }
 
 
 
 
-
-
-
-
+}
