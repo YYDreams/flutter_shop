@@ -23,6 +23,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin {
 
 
+// 火爆专区分页
+int pageNum = 0;
+// 火爆专区数据
+List<Map> hotGooodsList = [];
+
+
+
 // 防止刷新处理 保持当前状态
   @override 
   bool get wantKeepAlive => true;
@@ -99,11 +106,18 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
                   FloorView(
                     floor1List: floor1List,
                   ),
+                  
+                  _hotGoods(),
 
                  ],
               ),
+
+                  
+
               loadMore: ()async{
                 print('加载更多');
+                _getHotGoodsData();
+
               },
             );
 
@@ -119,6 +133,113 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
   );
   }
   
+void _getHotGoodsData(){
+
+  var param = {"page": pageNum};
+
+  request(kUrl.home_getHotGoods,formData: param).then((val){
+
+    var  data = json.decode(val.toString());
+    // print(data);
+    List<Map> newGoodsList = (data["data"] as List).cast();
+    
+
+    setState(() {
+      hotGooodsList.addAll(newGoodsList);
+
+print('=======================${hotGooodsList.length}');
+      pageNum++;
+
+    });
+
+  });
+
+}
+
+// Wrap布局 火爆专区
+// 
+Widget hotTitle =  Container(
+      margin: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.all(5.0),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color:Colors.white,
+        border: Border(
+          bottom: BorderSide(width: 0.5, color:kColor.defalutBorderColor),
+        ),
+      ),
+
+      child: Text(kString.kHomeHotTitle,style: TextStyle(
+        color: Colors.black26
+      ),),
+);
+
+// 
+Widget _hotWrapView(){
+
+print('----------------------------:${hotGooodsList.length}');
+  
+ List<Widget> listWidget = hotGooodsList.map((value) {
+        return InkWell(
+          onTap: () {},
+          child: Container(
+            width: ScreenUtil().setWidth(372),
+            color: Colors.white,
+            padding: EdgeInsets.all(5.0),
+            margin: EdgeInsets.only(bottom: 3.0),
+            child: Column(
+              children: <Widget>[
+                Image.network(
+                  value['image'],
+                  width: ScreenUtil().setWidth(375),
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+                Text(
+                  value['name'],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: ScreenUtil().setSp(26)),
+                ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      '￥${value['presentPrice']}',
+                      style: kFont.priceStyle,
+                    ),
+                    Text(
+                      '￥${value['oriPrice']}',
+                      style: kFont.oriPriceStyle,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList();
+
+      return Wrap(
+        spacing: 2,
+        children: listWidget,
+      );
+}
+
+
+Widget _hotGoods(){
+
+  return Container(
+
+      child: Column(
+        children: <Widget>[
+          hotTitle,
+          _hotWrapView(),
+        ],
+      
+      ),
+  );
+}
+
 }
 
 //首页轮播组件
@@ -371,7 +492,7 @@ class FloorView extends StatelessWidget{
 
                  Container(
                    padding: EdgeInsets.only(top:4),
-                      height: 400,
+                      height: 300,
                       child: InkWell(
                        child: Image.network(floor1List[0]["image"],fit: BoxFit.cover,),
                       onTap: (){
@@ -385,7 +506,7 @@ class FloorView extends StatelessWidget{
                  ),
                  Container(
                    padding: EdgeInsets.only(top:4),
-                      height: 200,
+                      height: 150,
                       child: InkWell(
                        child: Image.network(floor1List[1]["image"],fit: BoxFit.cover,),
                       onTap: (){
@@ -409,7 +530,7 @@ class FloorView extends StatelessWidget{
 
                       Container(
                    padding: EdgeInsets.only(top:4),
-                      height: 200,
+                      height: 150,
                       child: InkWell(
                        child: Image.network(floor1List[2]["image"],fit: BoxFit.cover,),
                       onTap: (){
@@ -423,7 +544,7 @@ class FloorView extends StatelessWidget{
                  ),
                  Container(
                    padding: EdgeInsets.only(top:4),
-                      height: 200,
+                      height: 150,
                       child: InkWell(
                        child: Image.network(floor1List[3]["image"],fit: BoxFit.cover,),
                       onTap: (){
@@ -438,7 +559,7 @@ class FloorView extends StatelessWidget{
   
      Container(
                    padding: EdgeInsets.only(top:4),
-                      height: 200,
+                      height: 150,
                       child: InkWell(
                        child: Image.network(floor1List[4]["image"],fit: BoxFit.cover,),
                       onTap: (){

@@ -16,4 +16,8 @@ static const String  loadReadyText = "上拉加载";
 
 static const String  kHomeReCommandTitle = "推荐商品";
 
+
+static const String  kHomeHotTitle = "火爆专区";
+
+
 }
