@@ -22,4 +22,7 @@ static  const String category_getSubCategory = "getCategory";
 
 
 
+  static  const String category_getCategoryGoods = "getCategoryGoods";
+
+
 }

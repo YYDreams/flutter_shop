@@ -10,6 +10,18 @@ import 'dart:convert'; //解析数据用的
 import 'package:flutter_swiper/flutter_swiper.dart'; //轮播组件
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../model/category_model.dart';
+import '../provide/category_provide.dart';
+
+import '../provide/current_index_provide.dart';
+
+
+
+
+
+
+import 'package:provide/provide.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -288,6 +300,10 @@ class CategoryView extends StatelessWidget {
   Widget _gridViewItemUI(BuildContext context,item,index){
     return InkWell(
       onTap: (){
+
+
+        _getCategory(context, index, item["firstCategoryId"]);
+
         print("跳转分类导航-----$index");
       },
       child: Column(
@@ -298,6 +314,37 @@ class CategoryView extends StatelessWidget {
       ),
 
     );
+  }
+
+
+
+
+  //跳转到分类页面
+
+  void _getCategory(context,int index,String categoryId) async{
+
+//    1.查询数据
+
+   await request(kUrl.category_getCategory,formData: null).then((value){
+     
+     var data  = json.decode(value.toString());
+
+     CategoryModel categoryModel = CategoryModel.fromJson(data);
+
+//     2.取出数据
+     List list  = categoryModel.data;
+
+     Provide.value<CategoryProvide>(context).changeCategory(categoryId, index);
+
+     Provide.value<CategoryProvide>(context).getSubCategory(list[index].secondCategoryVO, categoryId);
+
+//    3.页面跳转
+     Provide.value<CurrentIndexProvide>(context).changeIndex(1);
+
+
+   });
+
+
   }
     @override
    Widget build(BuildContext context) {
