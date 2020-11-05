@@ -41,6 +41,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 }
 
+
+
+
 //左侧组件
 class LeftCategoryNav extends StatefulWidget {
   @override
@@ -51,6 +54,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
 
   List<Data> categoryList =  [];
   var  selectedIndex = 0; //索引
+
   @override
   void initState() {
     super.initState();
@@ -76,7 +80,8 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
         ),
         child: ListView.builder(
             itemCount: categoryList.length,
-            itemBuilder: (BuildContext context, int index){
+
+            itemBuilder: (context,index){
 
             return   _leftItemAction(index);
 
@@ -162,7 +167,7 @@ Widget _leftItemAction(int index){
       Provide.value<CategoryProvide>(context).getSecondCategoryData(categoryList[0].secondCategoryVO, '4');
 
 
-      
+
     });
   }
 

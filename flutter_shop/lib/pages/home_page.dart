@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provide/provide.dart';
 import '../config/index.dart';
 import '../service/http_service.dart';
 
@@ -9,6 +10,10 @@ import 'dart:convert'; //解析数据用的
 
 import 'package:flutter_swiper/flutter_swiper.dart'; //轮播组件
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../model/categoryModel.dart';
+import '../provide/category_provide.dart';
+import '../provide/current_index_provide.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -285,10 +290,38 @@ class CategoryView extends StatelessWidget {
   final List categoryList;
   //构建函数
   CategoryView({Key key, this.categoryList}) : super(key:key);
+
+
+
+
+  //跳转到分类页面
+  void _getCategory(context,int index, String categoryId ) async{
+
+    await request('getCategory',formData: null).then((value){
+
+      var  data = json.decode(value.toString());
+      CategoryModel model = CategoryModel.fromJson(data);
+      List<Data> list  = model.data;
+
+
+      Provide.value<CategoryProvide>(context).changeFirstCategory(categoryId, index);
+
+      Provide.value<CategoryProvide>(context).getSecondCategoryData(list[index].secondCategoryVO, categoryId);
+
+      //页面跳转 tabBar切换
+      Provide.value<CurrentIndexProvide>(context).changeIndex(1);
+
+
+    });
+
+
+  }
+
   Widget _gridViewItemUI(BuildContext context,item,index){
     return InkWell(
       onTap: (){
         print("跳转分类导航-----$index");
+        _getCategory(context,index,item['firstCategoryId']);
       },
       child: Column(
           children: <Widget>[
@@ -298,6 +331,9 @@ class CategoryView extends StatelessWidget {
       ),
 
     );
+
+
+
   }
     @override
    Widget build(BuildContext context) {
