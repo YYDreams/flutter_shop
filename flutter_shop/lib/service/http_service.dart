@@ -11,8 +11,7 @@ try{
   Response response;
 
   Dio dio = Dio();
-
-  dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
+  dio.options.contentType = Headers.formUrlEncodedContentType;
 
   if(formData == null){
 
