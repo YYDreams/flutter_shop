@@ -4,6 +4,7 @@ import 'package:flutter_shop/provide/current_index_provide.dart';
 import 'package:provide/provide.dart';
 import './config/index.dart';
 import './provide/category_provide.dart';
+import './provide/category_goods_list_provide.dart';
 
 
 
@@ -14,11 +15,15 @@ var  currentIndexProvide = CurrentIndexProvide();
 
 var categoryIndexProvide  =  CategoryProvide();
 
+
+var goodsListIndexProvide  =  CategoryGoodsListProvide();
+
 var providers = Providers(); //状态管理
   // 当有多个的时候再一个一个加进入即可 当有多个的时候用..
   providers
      ..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide))
-     ..provide(Provider<CategoryProvide>.value(categoryIndexProvide));
+     ..provide(Provider<CategoryProvide>.value(categoryIndexProvide))
+     ..provide(Provider<CategoryGoodsListProvide>.value(goodsListIndexProvide));
 
   
   runApp(ProviderNode(child: MyApp(),providers: providers,));
