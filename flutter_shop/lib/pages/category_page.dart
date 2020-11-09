@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_shop/service/http_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provide/provide.dart';
 import '../config/index.dart';
 
@@ -117,7 +118,6 @@ class _CategoryLeftViewState extends State<CategoryLeftView> {
         height: ScreenUtil().setHeight(90),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-//          color:  isClick ? Color.fromRGBO(236, 238, 239, 1.0) : Colors.white,
           border: Border(
             bottom: BorderSide(width: 1, color: kColor.defalutBorderColor),
             left: BorderSide(
@@ -173,7 +173,8 @@ class _CategoryLeftViewState extends State<CategoryLeftView> {
       Provide.value<CategoryGoodsListProvide>(context)
           .getGoodsList(goodsListModel.data);
 
-//    Provide.value<CategoryGoodsListProvide>(context).goodsList = goodsListModel.data;
+      Provide.value<CategoryGoodsListProvide>(context).goodsList =
+          goodsListModel.data;
     });
   }
 }
@@ -192,7 +193,7 @@ class _CategoryRightViewState extends State<CategoryRightView> {
           Provide<CategoryProvide>(builder: (context, child, categoryProvide) {
         return Container(
           height: ScreenUtil().setHeight(80),
-          width: ScreenUtil().setWidth(500),
+          width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(180),
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border(
@@ -228,37 +229,65 @@ class _CategoryRightViewState extends State<CategoryRightView> {
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 5, 5, 5),
-        child: Text(
-          item.secondCategoryName,
-          style: TextStyle(
-            color: isClick ? kColor.primaryColor : Colors.black,
+        child: Center(
+          child: Text(
+            item.secondCategoryName,
+            style: TextStyle(
+              color: isClick ? kColor.primaryColor : Colors.black,
+            ),
           ),
         ),
       ),
     );
   }
 
-  //商品列表数据
-  _getGoodsList(context, String subcategoryId) {
-    var data = {
-      'firstCategoryId': Provide.value<CategoryProvide>(context).categoryId,
-      'secondCategoryId': subcategoryId,
-      'page': 1
-    };
-
-    request('getCategoryGoods', formData: data).then((val) {
-      var data = json.decode(val.toString());
-      print('getCategoryGoods secondCategory:::' + data.toString());
-      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
-      if (goodsList.data == null) {
-        Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
-      } else {
-        Provide.value<CategoryGoodsListProvide>(context)
-            .getGoodsList(goodsList.data);
-      }
-    });
-  }
 }
+
+
+//商品列表数据
+void _getGoodsList(context, String subcategoryId, {bool isLodaMore}) {
+
+  var page = isLodaMore ? Provide.value<CategoryProvide>(context).page : 1;
+ var secondCategoryId = isLodaMore ?   Provide.value<CategoryProvide>(context).subCategoryId : subcategoryId;
+
+  var data = {
+    'firstCategoryId':Provide.value<CategoryProvide>(context).categoryId,
+    'secondCategoryId': secondCategoryId,
+    'page': page
+  };
+
+  request('getCategoryGoods', formData: data).then((val) {
+    var data = json.decode(val.toString());
+    print('getCategoryGoods secondCategory:::' + data.toString());
+    CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
+
+    if (goodsList.data == null) {
+
+      if(isLodaMore){
+
+        Provide.value<CategoryProvide>(context).changeNoMore("没有更多了");
+
+      }else{
+
+        Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
+
+      }
+    } else {
+
+      if(isLodaMore){
+
+        Provide.value<CategoryGoodsListProvide>(context).addGoodsList(goodsList.data);
+
+      }else{
+
+        Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
+
+      }
+
+    }
+  });
+}
+
 
 // 商品列表
 class CategoryGoodsListView extends StatefulWidget {
@@ -288,7 +317,8 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
         if (data.goodsList.length > 0) {
           return Expanded(
               child: Container(
-            width: ScreenUtil().setWidth(300),
+            width:
+                MediaQuery.of(context).size.width - ScreenUtil().setWidth(180),
             child: EasyRefresh(
               refreshFooter: ClassicsFooter(
                 key: _footerKey,
@@ -298,13 +328,30 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
                   controller: scrollController,
                   itemCount: data.goodsList.length,
                   itemBuilder: (BuildContext context, int index) {
-
-                    return _GoodsListWidget(data.goodsList,index);
-
-
+                    return _GoodsListWidget(data.goodsList, index);
                   }),
+              //加载更多
+              loadMore: () async{
+
+                if(Provide.value<CategoryProvide>(context).noMoreText == "没有更多了"){
+
+                  Fluttertoast.showToast(
+                      msg: "已经到底了",
+                      toastLength:Toast.LENGTH_LONG,
+                      gravity:ToastGravity.CENTER,
+                  );
+
+                }else{
+
+                  _getGoodsList(context, "",isLodaMore: true);
+                }
+
+
+              },
             ),
           ));
+        } else {
+          return Text("暂无数据");
         }
       },
     );
@@ -313,29 +360,78 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
   Widget _GoodsListWidget(List dataList, int index) {
     return InkWell(
       onTap: () {
-//        TODO 调转到商品详情
-        print("调转到商品详情");
+//        TODO 跳转到商品详情
+        print("跳转到商品详情");
       },
+      child: Container(
+        padding: EdgeInsets.only(top: 5, bottom: 5),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: BorderSide(width: 1, color: kColor.defalutBorderColor),
+            )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _goodsImage(dataList, index),
+            Column(
+              children: [
+                _goodsName(dataList, index),
+                _goodsPrice(dataList, index),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  //商品图片
+  Widget _goodsImage(List dataList, int index) {
+    return Container(
+      width: ScreenUtil().setWidth(200),
+      child: Image.network(dataList[index].image),
+    );
+  }
+
+  //商品名字
+  Widget _goodsName(List dataList, int index) {
+    return Container(
+        width:
+            MediaQuery.of(context).size.width - ScreenUtil().setWidth(380) - 16,
+        margin: EdgeInsets.only(top: 5, left: 8, right: 8),
+        child: Text(
+          dataList[index].name,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ));
+  }
+
+  //商品价格
+  Widget _goodsPrice(List dataList, int index) {
+    return Container(
+      width:
+          MediaQuery.of(context).size.width - ScreenUtil().setWidth(380) - 16,
+      margin: EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Row(
-
         children: [
-
-          _goodsImage(dataList, index),
-          Column(
-            children: [],
+          Text(
+            "￥${dataList[index].presentPrice}",
+            style: TextStyle(
+              color: kColor.primaryColor,
+            ),
+          ),
+          Text(
+            "￥${dataList[index].oriPrice}",
+            style: TextStyle(
+              color: Colors.black12,
+            ),
           )
         ],
       ),
     );
-  }
-  
-  Widget _goodsImage(List dataList,int index){
-    
-    return Container(
-      
-      width: ScreenUtil().setWidth(200),
-      child: Image.network(dataList[index].image),
-    );
-    
   }
 }

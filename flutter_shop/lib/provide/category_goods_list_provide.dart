@@ -19,6 +19,11 @@ class CategoryGoodsListProvide with ChangeNotifier{
 
   }
 
+  //上拉加载列表 追加列表数据
+  addGoodsList(List<CategoryListData> list) {
+    goodsList.addAll(list);
+    notifyListeners();
+  }
 
 
 
