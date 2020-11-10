@@ -15,8 +15,7 @@ import '../provide/category_provide.dart';
 
 import '../provide/current_index_provide.dart';
 
-
-
+import '../pages/goods_detail_page.dart';
 
 
 
@@ -518,6 +517,9 @@ class FloorView extends StatelessWidget{
     void jumpGoodsDetail(context,goodsId){
 
       print("跳转到商品详情${goodsId}");
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> GoodsDetailPage(goodsId)));
+
     }
 
 

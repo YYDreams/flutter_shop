@@ -322,7 +322,6 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
             child: EasyRefresh(
               refreshFooter: ClassicsFooter(
                 key: _footerKey,
-//                bgColor: ,
               ),
               child: ListView.builder(
                   controller: scrollController,
