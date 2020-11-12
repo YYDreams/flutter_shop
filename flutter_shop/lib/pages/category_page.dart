@@ -5,19 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_shop/service/http_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provide/provide.dart';
-import '../config/index.dart';
-
-import '../model/category_model.dart';
-
 import 'package:flutter_shop/provide/category_provide.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:flutter_shop/provide/category_goods_list_provide.dart';
+import 'package:provide/provide.dart';
 
+import '../config/index.dart';
+import '../model/category_model.dart';
 import '../model/category_goods_list_model.dart';
 import '../provide/category_goods_list_provide.dart';
+import '../pages/goods_detail_page.dart';
 
 class CategoryPage extends StatefulWidget {
   CategoryPage({Key key}) : super(key: key);
@@ -361,6 +358,9 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
       onTap: () {
 //        TODO 跳转到商品详情
         print("跳转到商品详情");
+
+        jumpGoodsDetail(context,dataList[index].goodsId);
+
       },
       child: Container(
         padding: EdgeInsets.only(top: 5, bottom: 5),
@@ -434,3 +434,14 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
     );
   }
 }
+
+/**
+ *   跳转到商品详情
+ */
+void jumpGoodsDetail(context, goodsId) {
+  print("跳转到商品详情${goodsId}");
+
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => GoodsDetailPage(goodsId)));
+}
+

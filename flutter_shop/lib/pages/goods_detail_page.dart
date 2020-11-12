@@ -1,94 +1,67 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_shop/config/const_url.dart';
-import 'package:flutter_shop/service/http_service.dart';
-import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'package:flutter_shop/config/index.dart';
 import 'dart:async';
+import 'package:provide/provide.dart';
+import '../provide/goods_detail_provide.dart';
+import '../pages/details_page/details_top_area.dart';
+import '../pages/details_page/details_top_explain.dart';
+import '../pages/details_page/details_tabbar.dart';
+import '../pages/details_page/details_web.dart';
+import '../pages/details_page/details_bottom.dart';
 
 class GoodsDetailPage extends StatelessWidget {
-
   final String goodsId;
 
   GoodsDetailPage(this.goodsId);
+
   @override
   Widget build(BuildContext context) {
-    
-    //SafeArea适配刘海屏
-    return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
               Navigator.pop(context);
-//              Navigator
             }),
-          title: Text("商品详情"),
-          ),
+        title: Text(kString.kGoodsDetailTitle), //商品详情
+      ),
 
-          //
-          body: FutureBuilder(
-
-
-            //获取商品信息
-            future: _getGoodsInfo(context),
-            builder: (context,snapshot){
-
-              if(snapshot.hasData){
-
-                return Stack(
-
+      body: FutureBuilder(
+        //获取商品信息
+        future: _getGoodsInfo(context),
+        builder: (context, snapshot) {
+          print('----获取商品信息是否成功--${snapshot.hasData}');
+          if (snapshot.hasData) {
+            return Stack(
+              children: [
+                ListView(
                   children: [
-
-                    ListView(
-                      
-                      children: [
-
-                      ],
-                    ),
-                    //底层元素
-                    Positioned(
-                      bottom: 0,
-                        left: 0,
-                        child: Text("底部组件"))
+                    DetailArea(),
+                    DetailExplain(),
+                    DetailsTabBarPage(),
+                    DetailsWebPage(),
                   ],
-                );
-              }else{
-                return Text("加载中....");
-
-              }
-
-            },
-
-
-          ),
-          
-        )
+                ),
+                //底层元素
+                Positioned(bottom: 0, left: 0, child: DetailBottonPage()),
+              ],
+            );
+          } else {
+            return Text(kString.kloadingText);//"加载中...."
+          }
+        },
+      ),
     );
   }
+  /**
+   * 获取商品详情数据
+   */
+  Future _getGoodsInfo(BuildContext context)  async {
+    //加载商品详情数据
+   await Provide.value<GoodsDetailProvide>(context).getGoodsInfo(goodsId);
 
-
-  Future _getGoodsInfo(BuildContext context) async{
-
-    var formData = {'goodId':'001'};
-
-
-    Dio dio = Dio();
-
-    dio.options.contentType = Headers.formUrlEncodedContentType;
-
-
-    await dio.post("http://127.0.0.1:3000/getGoodDetail").then((value){
-
-
-      var responseData  = json.decode(value.toString());
-
-      print("responseData:" + responseData.toString());
-
-    });
-
+//   此处很重要  之前  一定要return 否则snapshot.hasData一直打印的都是false
+   return "";
 
   }
-
-
-
 }

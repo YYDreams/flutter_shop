@@ -20,4 +20,13 @@ static const String  kHomeReCommandTitle = "推荐商品";
 static const String  kHomeHotTitle = "火爆专区";
 
 
+static const String kGoodsDetailTitle  = "商品详情";
+
+
+static const String kloadingText  = "加载中....";
+
+
+
+
+
 }
