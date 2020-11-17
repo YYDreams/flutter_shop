@@ -4,6 +4,8 @@ import 'package:flutter_shop/config/color.dart';
 import 'package:provide/provide.dart';
 import '../../provide/goods_detail_provide.dart';
 import '../../provide/current_index_provide.dart';
+import '../../provide/cart_provide.dart';
+
 class DetailBottonPage extends StatefulWidget {
   @override
   _DetailBottonPageState createState() => _DetailBottonPageState();
@@ -18,13 +20,12 @@ class _DetailBottonPageState extends State<DetailBottonPage> {
     var  goodsId = detailInfoModel.goodsId;
 
     var  goodsName = detailInfoModel.goodsName;
-//
-//    var  goodsId = detailInfoModel.goodsId;
-//    var  goodsId = detailInfoModel.goodsId;
-//
 
+    var  price = detailInfoModel.presentPrice;
 
+    var  image = detailInfoModel.image1;
 
+    var count = 1;
 
     return Container(
      height:ScreenUtil().setHeight(120),
@@ -56,26 +57,37 @@ class _DetailBottonPageState extends State<DetailBottonPage> {
                 ),
 
               ),
-              Positioned(
-                top: 0, right: 10,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(6, 4, 6, 4),
-                    decoration: BoxDecoration(
-                      color: kColor.primaryColor,
-                      border: Border.all(width: 2,color: Colors.white),
-                      //6 + 6  最大为12 设置再大无效果
-                      borderRadius: BorderRadius.circular(12),
-                    ),
 
-                    child: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(15),
+
+              Provide<CartProvide>(
+              builder: (context,child,value){
+
+                int goodsCount = Provide.value<CartProvide>(context).allGoodsCount;
+
+                return   Positioned(
+                    top: 0, right: 10,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(6, 4, 6, 4),
+                      decoration: BoxDecoration(
+                        color: kColor.primaryColor,
+                        border: Border.all(width: 2,color: Colors.white),
+                        //6 + 6  最大为12 设置再大无效果
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
 
-              )),
+                      child: Text(
+                        '$goodsCount',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ScreenUtil().setSp(15),
+                        ),
+                      ),
+
+                    ));
+
+               },
+              ),
+
 
             ],
           ),
@@ -83,6 +95,10 @@ class _DetailBottonPageState extends State<DetailBottonPage> {
               InkWell(
                 onTap: (){
                   print("加入购物车");
+
+                  Provide.value<CartProvide>(context).saveCart(goodsId, goodsName, count, price, image);
+
+
                 },
                 child: Container(
                   color: Colors.green,

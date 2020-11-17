@@ -6,7 +6,7 @@ import './config/index.dart';
 import './provide/category_provide.dart';
 import './provide/category_goods_list_provide.dart';
 import './provide/goods_detail_provide.dart';
-
+import './provide/cart_provide.dart';
 
 
 
@@ -24,6 +24,9 @@ var goodsListIndexProvide  =  CategoryGoodsListProvide();
 //商品详情
 var goodsDetailIndexProvide = GoodsDetailProvide();
 
+//购物车
+var cartProvide = CartProvide();
+
 
 
 var providers = Providers(); //状态管理
@@ -32,6 +35,7 @@ var providers = Providers(); //状态管理
      ..provide(Provider<CurrentIndexProvide>.value(currentIndexProvide))
      ..provide(Provider<CategoryProvide>.value(categoryIndexProvide))
      ..provide(Provider<GoodsDetailProvide>.value(goodsDetailIndexProvide))
+     ..provide(Provider<CartProvide>.value(cartProvide))
      ..provide(Provider<CategoryGoodsListProvide>.value(goodsListIndexProvide));
 
   

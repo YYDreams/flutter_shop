@@ -10,10 +10,10 @@ class ShopCardPage extends StatefulWidget {
 class _ShopCardPageState extends State<ShopCardPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-       child: Center(
-         child: Text("购物车"),
-       ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('购物车'),
+      ),
     );
   }
 }

@@ -39,7 +39,7 @@ class DetailsTabBarPage extends StatelessWidget {
       },
 
     );
-    
+
 
   }
 
