@@ -136,4 +136,21 @@ class CartProvide with ChangeNotifier{
     notifyListeners();
 }
 
+
+//修改选中状态 (主要目的:改变model.isCheck属性，刷新数据)
+changeCheckState(CartModel model) async{
+
+
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    cartString = prefer.getString('cartInfo');
+
+
+
+
+
+    await  getCartInfo();
+
+
+
+}
 }
