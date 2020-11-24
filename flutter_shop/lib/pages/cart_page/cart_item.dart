@@ -31,12 +31,10 @@ class CartItem extends StatelessWidget {
     );
   }
 
-  /**
+  /*
    *  选择按钮
    */
-
-  //如果需要context，说明需要用到Provide
-  Widget _setupCartCheckBoxWidget(BuildContext context, CartModel model) {
+Widget _setupCartCheckBoxWidget(BuildContext context, CartModel model) {
     return Container(
       child: Checkbox(
         value: model.isCheck,
@@ -51,7 +49,7 @@ class CartItem extends StatelessWidget {
   }
 }
 
-/**
+/*
  * 商品图片
  */
 
@@ -65,7 +63,7 @@ Widget _setupGoodsImageWidget(CartModel model) {
   );
 }
 
-/**
+/*
  * 商品名字
  */
 
@@ -87,7 +85,7 @@ Widget _setupGoodsInfoWidget(BuildContext context, CartModel model) {
   );
 }
 
-/**
+/*
  * 商品价格和数量
  */
 Widget _setupGoodsPriceCountWidget(BuildContext context, CartModel model) {
@@ -108,7 +106,7 @@ Widget _setupGoodsPriceCountWidget(BuildContext context, CartModel model) {
   );
 }
 
-/**
+/*
  * 删除按钮
  */
 Widget _setupDeleteButtonWidget(BuildContext context, CartModel model) {

@@ -5,6 +5,11 @@ import '../model/cart_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+enum GoodsCountType {
+  add,
+  reduce,
+}
+
 class CartProvide with ChangeNotifier {
   String kCartInfoKey = 'cartInfo'; //存储在本地数据key的名字
 
@@ -18,7 +23,7 @@ class CartProvide with ChangeNotifier {
 
   bool isAllCheck = true; //是否全选
 
-  /**
+  /*
    * 保存加购数据
    */
   saveCart(goodsId, goodsName, count, price, image) async {
@@ -84,7 +89,7 @@ class CartProvide with ChangeNotifier {
     notifyListeners();
   }
 
-  /**
+  /*
    * 获取购物车数据
    */
   getCartInfo() async {
@@ -120,7 +125,7 @@ class CartProvide with ChangeNotifier {
     notifyListeners();
   }
 
-  /**
+  /*
    * 修改选中状态 (主要目的:改变model.isCheck属性，刷新数据)
    */
   changeCheckState(CartModel model) async {
@@ -145,7 +150,7 @@ class CartProvide with ChangeNotifier {
     await getCartInfo();
   }
 
-  /**
+  /*
    * 删除商品
    */
   deleteGoods(String goodsId) async {
@@ -170,6 +175,35 @@ class CartProvide with ChangeNotifier {
 
     prefre.setString(kCartInfoKey, cartString);
 
+    await getCartInfo();
+  }
+
+  /*
+   *  修改商品数量
+   */
+  changeGoodsCount(CartModel model, GoodsCountType type) async {
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    cartString = pre.getString(kCartInfoKey);
+
+    print("typetypetypetypetype${type}");
+    List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
+
+    int tempIndex = 0;
+    int changeIndex = 0;
+    tempList.forEach((element) {
+      if (element['goodsId'] == model.goodsId) {
+        changeIndex = tempIndex;
+      }
+      tempIndex++;
+    });
+    if (type == GoodsCountType.add) {
+      model.count++;
+    } else {
+      model.count <= 1 ? (model.count = 1) : (model.count--);
+    }
+    tempList[changeIndex] = model.toJson();
+    cartString = json.encode(tempList).toString();
+    pre.setString(kCartInfoKey, cartString);
     await getCartInfo();
   }
 }
