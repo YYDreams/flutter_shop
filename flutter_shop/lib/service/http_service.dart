@@ -28,6 +28,7 @@ try{
     return response;
 
   }else{
+    print('---接口请求异常接口请求异常接口请求异常接口请求异常---');
   throw Exception('接口请求异常！！！');
 
   }

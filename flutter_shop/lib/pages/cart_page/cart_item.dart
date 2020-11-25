@@ -34,7 +34,7 @@ class CartItem extends StatelessWidget {
   /*
    *  选择按钮
    */
-Widget _setupCartCheckBoxWidget(BuildContext context, CartModel model) {
+  Widget _setupCartCheckBoxWidget(BuildContext context, CartModel model) {
     return Container(
       child: Checkbox(
         value: model.isCheck,
@@ -52,8 +52,7 @@ Widget _setupCartCheckBoxWidget(BuildContext context, CartModel model) {
 /*
  * 商品图片
  */
-
-Widget _setupGoodsImageWidget(CartModel model) {
+ Widget _setupGoodsImageWidget(CartModel model) {
   return Container(
     width: ScreenUtil().setWidth(150),
     decoration: BoxDecoration(

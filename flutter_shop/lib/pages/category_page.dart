@@ -46,7 +46,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 }
 
-// 左侧视图
+/*
+ * 左侧视图
+ */
 class CategoryLeftView extends StatefulWidget {
   @override
   _CategoryLeftViewState createState() => _CategoryLeftViewState();
@@ -132,7 +134,9 @@ class _CategoryLeftViewState extends State<CategoryLeftView> {
     );
   }
 
-  // 获取分类数据
+  /*
+   * 获取分类数据
+   */
   _getCategoryData() async {
     await request(kUrl.category_getCategory, formData: null).then((value) {
       var data = json.decode(value.toString());
@@ -176,7 +180,9 @@ class _CategoryLeftViewState extends State<CategoryLeftView> {
   }
 }
 
-// 右侧视图
+  /*
+   * 右侧视图
+   */
 class CategoryRightView extends StatefulWidget {
   @override
   _CategoryRightViewState createState() => _CategoryRightViewState();
@@ -208,7 +214,10 @@ class _CategoryRightViewState extends State<CategoryRightView> {
     );
   }
 
-//  右侧顶部点击事件
+
+  /*
+   * 右侧顶部点击事件
+   */
   Widget _rightInkWell(int index, SecondCategoryVO item) {
     bool isClick = false;
 
@@ -241,7 +250,9 @@ class _CategoryRightViewState extends State<CategoryRightView> {
 }
 
 
-//商品列表数据
+  /*
+   * 商品列表数据
+   */
 void _getGoodsList(context, String subcategoryId, {bool isLodaMore}) {
 
   var page = isLodaMore ? Provide.value<CategoryProvide>(context).page : 1;
@@ -285,8 +296,9 @@ void _getGoodsList(context, String subcategoryId, {bool isLodaMore}) {
   });
 }
 
-
-// 商品列表
+  /*
+   * 商品列表
+   */
 class CategoryGoodsListView extends StatefulWidget {
   @override
   _CategoryGoodsListViewState createState() => _CategoryGoodsListViewState();
@@ -384,8 +396,9 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
       ),
     );
   }
-
-  //商品图片
+  /*
+   * 商品图片
+   */
   Widget _goodsImage(List dataList, int index) {
     return Container(
       width: ScreenUtil().setWidth(200),
@@ -393,7 +406,9 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
     );
   }
 
-  //商品名字
+  /*
+   * 商品名字
+   */
   Widget _goodsName(List dataList, int index) {
     return Container(
         width:
@@ -409,7 +424,9 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
         ));
   }
 
-  //商品价格
+  /*
+   * 商品价格
+   */
   Widget _goodsPrice(List dataList, int index) {
     return Container(
       width:
@@ -435,7 +452,7 @@ class _CategoryGoodsListViewState extends State<CategoryGoodsListView> {
   }
 }
 
-/**
+/*
  *   跳转到商品详情
  */
 void jumpGoodsDetail(context, goodsId) {

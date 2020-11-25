@@ -184,8 +184,6 @@ class CartProvide with ChangeNotifier {
   changeGoodsCount(CartModel model, GoodsCountType type) async {
     SharedPreferences pre = await SharedPreferences.getInstance();
     cartString = pre.getString(kCartInfoKey);
-
-    print("typetypetypetypetype${type}");
     List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
 
     int tempIndex = 0;
@@ -204,6 +202,28 @@ class CartProvide with ChangeNotifier {
     tempList[changeIndex] = model.toJson();
     cartString = json.encode(tempList).toString();
     pre.setString(kCartInfoKey, cartString);
+    await getCartInfo();
+  }
+
+  /*
+   * 全选
+   */
+
+  changeAllCheckStatus(bool isAllCheck) async {
+    SharedPreferences prefer = await SharedPreferences.getInstance();
+    cartString = prefer.getString(kCartInfoKey);
+    List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
+
+    List<Map> newList = [];
+
+    for (var item in tempList) {
+      var newItem = item;
+      newItem['isCheck'] = isAllCheck;
+      newList.add(newItem);
+    }
+
+    cartString = json.encode(newList).toString();
+    prefer.setString(kCartInfoKey, cartString);
     await getCartInfo();
   }
 }

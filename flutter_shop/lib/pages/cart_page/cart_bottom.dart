@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shop/config/color.dart';
 import '../../provide/cart_provide.dart';
 import 'package:provide/provide.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartBottomPage extends StatefulWidget {
   @override
   _CartBottomPageState createState() => _CartBottomPageState();
 }
+
 class _CartBottomPageState extends State<CartBottomPage> {
   @override
   Widget build(BuildContext context) {
     return Provide<CartProvide>(builder: (context, child, value) {
       return Container(
           height: 50,
+//          margin: EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _setupAllCheckWidget(),
-              _setupPriceWidget(),
+              _setupPriceWidget(context),
               _setupSettlementWidget(),
             ],
           ));
@@ -31,22 +34,35 @@ class _CartBottomPageState extends State<CartBottomPage> {
    */
   _setupAllCheckWidget() {
     return Container(
-      child: FlatButton(
-        onPressed: () {},
-        color: Colors.red,
-        child: Text('全选'),
-      ),
-    );
+        width: ScreenUtil().setWidth(150),
+        child: Row(
+      children: [
+        Checkbox(
+            value: Provide.value<CartProvide>(context).isAllCheck,
+            activeColor: kColor.primaryColor,
+            onChanged: (bool isAllCheck) {
+
+              Provide.value<CartProvide>(context).changeAllCheckStatus(isAllCheck);
+
+            }),
+        Text('全选', style: TextStyle(fontSize: 15, color: Colors.black)),
+      ],
+    ));
   }
 
   /*
    * 合计
    */
-  _setupPriceWidget() {
+  _setupPriceWidget(BuildContext context) {
     return Container(
+//      color: Colors.orange,
+      width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(350),
+      alignment: Alignment.centerRight,
       child: Column(
         children: [
-          Text('合计:￥100'),
+          //toStringAsFixed 保留几位小数
+          Text(
+              '合计:￥${Provide.value<CartProvide>(context).allPrice.toStringAsFixed(2)}'),
           Text('满10元免配送费'),
         ],
       ),
@@ -58,12 +74,17 @@ class _CartBottomPageState extends State<CartBottomPage> {
    */
   _setupSettlementWidget() {
     return Container(
-      child: Positioned(
-        right: 10,
-        child: FlatButton(
-          color: kColor.primaryColor,
-          child:
-              Text('结算(${Provide.value<CartProvide>(context).allGoodsCount})'),
+      width: ScreenUtil().setWidth(180),
+      color: kColor.primaryColor,
+      child: FlatButton(
+        onPressed: (){
+          //TODO 待处理
+          print('进入结算页面');
+        },
+        color: kColor.primaryColor,
+        child: Text(
+          '结算(${Provide.value<CartProvide>(context).allGoodsCount})',
+          style: TextStyle(color: Colors.white, fontSize: 15),
         ),
       ),
     );
