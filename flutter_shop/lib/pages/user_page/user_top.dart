@@ -51,6 +51,8 @@ class _UserTopPageState extends State<UserTopPage> {
    *  顶部优惠券、我的收藏、我的评价布局
    */
   Widget setupUserItemWidget() {
+
+
     return Container(
       margin: EdgeInsets.only(left: 5, right: 5),
       child: Row(
