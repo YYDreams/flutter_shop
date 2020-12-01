@@ -4,7 +4,7 @@ import 'package:flutter_shop/config/color.dart';
 
 class kCommon{
   /*
-  * 设置分割线（）
+  * 设置分割线
   */
   Widget setupLineWidget({double width = 10, Color color = kColor.defalutBgColor}){
 
@@ -20,6 +20,8 @@ class kCommon{
     );
 
   }
+
+
 
 
 
