@@ -31,5 +31,9 @@ static  const String getGoodDetail = "getGoodDetail";
 
 
 
+//结算页接口
+  static  const String getSettleInfo = "getSettleInfo";
+
+
 
 }

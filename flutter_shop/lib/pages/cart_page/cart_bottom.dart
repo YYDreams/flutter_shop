@@ -3,7 +3,7 @@ import 'package:flutter_shop/config/color.dart';
 import '../../provide/cart_provide.dart';
 import 'package:provide/provide.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../pages/settlement_page.dart';
 class CartBottomPage extends StatefulWidget {
   @override
   _CartBottomPageState createState() => _CartBottomPageState();
@@ -78,8 +78,12 @@ class _CartBottomPageState extends State<CartBottomPage> {
       color: kColor.primaryColor,
       child: FlatButton(
         onPressed: (){
-          //TODO 待处理
+          //TODO 待处理  Navigator.push(context,
+          //      MaterialPageRoute(builder: (context) => GoodsDetailPage(goodsId)));
           print('进入结算页面');
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> SettlementPage()));
+
+
         },
         color: kColor.primaryColor,
         child: Text(
