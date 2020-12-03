@@ -7,6 +7,7 @@ import './provide/category_provide.dart';
 import './provide/category_goods_list_provide.dart';
 import './provide/goods_detail_provide.dart';
 import './provide/cart_provide.dart';
+import './provide/settlement_provide.dart';
 
 
 
@@ -27,6 +28,10 @@ var goodsDetailIndexProvide = GoodsDetailProvide();
 //购物车
 var cartProvide = CartProvide();
 
+//确认订单
+var settlementProvide = SettlementProvide();
+
+
 
 
 var providers = Providers(); //状态管理
@@ -36,6 +41,7 @@ var providers = Providers(); //状态管理
      ..provide(Provider<CategoryProvide>.value(categoryIndexProvide))
      ..provide(Provider<GoodsDetailProvide>.value(goodsDetailIndexProvide))
      ..provide(Provider<CartProvide>.value(cartProvide))
+     ..provide(Provider<SettlementProvide>.value(settlementProvide))
      ..provide(Provider<CategoryGoodsListProvide>.value(goodsListIndexProvide));
 
   
