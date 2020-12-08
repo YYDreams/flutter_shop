@@ -43,6 +43,7 @@ dependencies:
   # 存储
   shared_preferences: ^0.5.1
   provider: ^3.0.0+1
+  flutter_datetime_picker: ^1.4.0
 
 
 dev_dependencies:

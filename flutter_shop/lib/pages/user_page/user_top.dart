@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_shop/config/color.dart';
-
+import '../login/login_page.dart';
 class UserTopPage extends StatefulWidget {
   @override
   _UserTopPageState createState() => _UserTopPageState();
@@ -32,7 +32,10 @@ class _UserTopPageState extends State<UserTopPage> {
       margin: EdgeInsets.only(top: 40),
       child: InkWell(
         onTap: () {
+
           print('setupRegisterOrLoginWidget');
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => LoginPage()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

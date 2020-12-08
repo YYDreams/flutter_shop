@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_shop/config/color.dart';
-import 'package:flutter_shop/config/common_widget.dart';
 
 class UserOrderPage extends StatelessWidget {
   @override
@@ -14,18 +12,14 @@ class UserOrderPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _setupOrderHeaderWidget(),
-          kCommon().setupLineWidget(
-            width: 1,
-          ),
+          _setupLineWidget(),
           _setupOrderItemWidget(),
         ],
       ),
     );
   }
 
-  /*
-   *
-   */
+  ///全部订单
   Widget _setupOrderHeaderWidget() {
     return InkWell(
       onTap: () {
@@ -55,6 +49,21 @@ class UserOrderPage extends StatelessWidget {
     );
   }
 
+  ///设置分割线
+  Widget _setupLineWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 1,
+            color: Color.fromRGBO(244, 245, 245, 1.0),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///设置子订单
   Widget _setupOrderItemWidget() {
     return Container(
       child: Row(
@@ -89,7 +98,9 @@ class UserOrderPage extends StatelessWidget {
                 width: 30,
                 height: 20,
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Text('${title}'),
             ],
           ),
